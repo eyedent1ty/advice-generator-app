@@ -1,22 +1,29 @@
-const fetchAdviceData = async () => {
-    const response = await fetch('https://api.adviceslip.com/advice');
-    const data = await response.json();
-    return data;
+// Generate random number as id
+const randomId = () => {
+  return Math.floor(Math.random() * 224) + 1;
 };
 
-const renderData = (data) => {
-    const { id, advice } = data.slip;
+// Return a promise with the data if resolved
+const fetchAdviceData = async (id) => {
+  console.log(navigator.userAgent);
+  const response = await fetch(`https://api.adviceslip.com/advice/${id}`);
+  const data = await response.json();
+  return data;
+};
 
-    const adviceId = document.querySelector('.advice__id');
-    const adviceQuote = document.querySelector('.advice__quote');
-    adviceId.innerHTML = `ADVICE #${id}`;
-    adviceQuote.innerHTML = `"${advice}"`;
+// Display the advice id and quote
+const renderData = (data) => {
+  const { id, advice } = data.slip;
+  const adviceId = document.querySelector('.advice__id');
+  const adviceQuote = document.querySelector('.advice__quote');
+  adviceId.innerHTML = `ADVICE #${id}`;
+  adviceQuote.innerHTML = `"${advice}"`;
 };
 
 const fetchAndRenderData = () => {
-    fetchAdviceData()
-        .then(renderData)
-        .catch((err) => console.log(err));
+  fetchAdviceData(randomId())
+    .then(renderData)
+    .catch((err) => console.log(err));
 };
 
 fetchAndRenderData();
